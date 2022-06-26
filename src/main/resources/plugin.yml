@@ -1,0 +1,4 @@
+name: Bargain
+version: '${project.version}'
+main: dev.jdog.bargain.Bargain
+api-version: 1.18
