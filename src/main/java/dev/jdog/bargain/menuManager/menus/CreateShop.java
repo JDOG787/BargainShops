@@ -70,7 +70,7 @@ public class CreateShop extends Menu {
                 ItemMeta meta = item.getItemMeta();
                 meta.setLocalizedName("display");
                 item.setItemMeta(meta);
-                Item randomItem = Bargain.getPlugin().getServer().getWorld("SkyLobby2").dropItem(l, item);
+                Item randomItem = Bargain.getPlugin().getServer().getWorld("world").dropItem(l, item);
                 randomItem.setVelocity(new Vector(0,0,0));
                 break;
             case "cancel":

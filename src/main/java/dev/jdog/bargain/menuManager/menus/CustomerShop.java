@@ -5,10 +5,12 @@ import dev.jdog.bargain.menuManager.Menu;
 import dev.jdog.bargain.menuManager.PlayerMenuUtility;
 import dev.jdog.bargain.models.Shop;
 import dev.jdog.bargain.utils.MenuUtils;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -30,19 +32,34 @@ public class CustomerShop extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent e) {
+        Player p = (Player) e.getWhoClicked();
+        Shop shop = Bargain.getPlayerUtiliity(getPlayer()).getCurrentShop();
 
         switch (e.getCurrentItem().getType()){
-            case EMERALD:
-                //they pressed yes, kill yourself
-                e.getWhoClicked().closeInventory();
-                e.getWhoClicked().setHealth(0.0);
+            case GOLD_INGOT:
+                p.sendMessage("Buy");
+
                 break;
-            case BARRIER:
-                e.getWhoClicked().sendMessage("Changed your mind? aww.");
-                e.getWhoClicked().closeInventory();
+            case IRON_INGOT:
+                p.sendMessage("Sell");
+                ItemStack foundItem = null;
+                for (ItemStack item: p.getInventory().getContents()) {
+                    if (item != null && item.getType() == shop.getShopItem()) {
+                        foundItem = item;
+                    }
+                }
+                if (foundItem != null) {
+                    if (foundItem.getAmount() >= shop.getQuanity()) {
+                        p.getInventory().removeItem(new ItemStack(shop.getShopItem(), shop.getQuanity()));
+//                         Give player money
+                    } else {
+                        p.sendMessage(ChatColor.RED + "You do not have enough of the required item!");
+                    }
+                } else {
+                    p.sendMessage(ChatColor.RED + "You do not have any of the required items!");
+                }
                 break;
         }
-
     }
 
     @Override
@@ -59,11 +76,11 @@ public class CustomerShop extends Menu {
         lore[0] =  "$" + shop.getSellPrice();
         slot2 = new MenuUtils().createItemMeta(slot2, ChatColor.GREEN + "" + ChatColor.BOLD + "Sell", "sell", lore);
         ItemStack slot3 = new ItemStack(Material.PAPER);
-        lore[0] = "$e" + economy.getBalance(getPlayer());
+        lore[0] = economy.format(economy.getBalance(getPlayer()));
         slot3 = new MenuUtils().createItemMeta(slot3, ChatColor.GREEN + "" + ChatColor.BOLD + "Current Funds", "", lore);
-        ItemStack slot4 = new ItemStack(Material.PAPER);
+        ItemStack slot4 = new ItemStack(shop.getShopItem());
         lore[0] = "";
-        slot4 = new MenuUtils().createItemMeta(slot4, shop.getShopItem().name(), "", lore);
+        slot4 = new MenuUtils().createItemMeta(slot4, ChatColor.WHITE + shop.getShopItem().name(), "", lore);
 
 
 

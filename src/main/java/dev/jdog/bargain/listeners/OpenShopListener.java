@@ -6,6 +6,7 @@ import dev.jdog.bargain.ShopGui.menus.CreateShop;
 import dev.jdog.bargain.ShopGui.menus.EditShop;
 import dev.jdog.bargain.menuManager.PlayerMenuUtility;
 import dev.jdog.bargain.menuManager.menus.CustomerShop;
+import dev.jdog.bargain.menuManager.menus.DeleteShop;
 import dev.jdog.bargain.menuManager.menus.EmtpyShop;
 import dev.jdog.bargain.menuManager.menus.VendorShop;
 import dev.jdog.bargain.models.Shop;
@@ -34,20 +35,20 @@ public class OpenShopListener implements Listener {
             if ((e.getItem() != null && e.getItem().getType() == Material.STICK)) {
                 Location location = e.getClickedBlock().getLocation();
                 Shop shop = new ShopStorage().findShopByLocation(location);
+                PlayerMenuUtility playerMenuUtility = Bargain.getPlayerUtiliity(p);
                 if (shop != null) {
-//                    String owner = shop.getOwner();
-//                    if (p.getName().equals(owner)) {
-//                        System.out.println(shop.getShopItem());
-//                        new EditShop().openGui(p, shop.getShopItem());
-//                    } else {
-//                        p.sendMessage(ChatColor.RED + "You don't have permission to do that!");
-//                    }
-                    System.out.println("test");
+                    String owner = shop.getOwner();
+                    if (p.getName().equals(owner)) {
+                        DeleteShop menu = new DeleteShop(playerMenuUtility);
+                        playerMenuUtility.setCurrentShop(shop);
+                        menu.open();
+                    } else {
+                        p.sendMessage(ChatColor.RED + "You don't have permission to do that!");
+                    }
                 } else {
-                    PlayerMenuUtility playerMenuUtility = Bargain.getPlayerUtiliity(p);
                     EmtpyShop menu = new EmtpyShop(playerMenuUtility);
-                    menu.open();
                     playerMenuUtility.setLocation(location);
+                    menu.open();
                 }
             } else {
                 Location location = e.getClickedBlock().getLocation();
@@ -60,6 +61,8 @@ public class OpenShopListener implements Listener {
 
                     if (p.getName().equals(shop.getOwner())) {
                         VendorShop menu = new VendorShop(playerMenuUtility);
+//                        CustomerShop menu = new CustomerShop(playerMenuUtility);
+
                         menu.open();
                     } else {
                         CustomerShop menu = new CustomerShop(playerMenuUtility);

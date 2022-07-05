@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class Shop {
     private String owner;
     private Material shopItem;
@@ -16,11 +18,13 @@ public class Shop {
     private Integer x;
     private Integer y;
     private Integer z;
+    private String world;
+    private String id;
 
 
 
     public Shop(Player p, Material item, Integer buy, Integer sell, Integer q, Location l) {
-        this.owner = p.getName();
+        this.owner = p.getName()+"hi";
         this.shopItem = item;
 //        System.out.println("ok"+item);
         this.buyPrice = buy;
@@ -29,6 +33,8 @@ public class Shop {
         this.x = l.getBlockX();
         this.y = l.getBlockY();
         this.z = l.getBlockZ();
+        this.world = l.getWorld().getName();
+        this.id = UUID.randomUUID().toString();
     }
 
     public String getOwner() {
@@ -48,10 +54,18 @@ public class Shop {
     }
 
     public Location getLocation() {
-        return  new Location(Bargain.getPlugin().getServer().getWorld("SkyLobby2"), x, y, z);
+        return  new Location(Bargain.getPlugin().getServer().getWorld(this.world), this.x, this.y, this.z);
     }
 
     public Integer getSellPrice() {
         return sellPrice;
+    }
+
+    public String getWorld() {
+        return world;
+    }
+
+    public String getId() {
+        return id;
     }
 }

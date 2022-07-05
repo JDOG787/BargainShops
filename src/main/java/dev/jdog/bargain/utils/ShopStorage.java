@@ -37,6 +37,15 @@ public class ShopStorage {
         return null;
     }
 
+    public void deleteShop(String id) {
+        shops.removeIf(shop -> shop.getId().equals(id));
+        try {
+            save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void loadShops() throws IOException {
         Gson gson = new Gson();
         File file = new File(Bargain.getPlugin().getDataFolder().getAbsolutePath() + "/shops.json");

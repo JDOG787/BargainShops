@@ -50,15 +50,16 @@ public final class Bargain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
         getServer().getPluginManager().registerEvents(new BlockExplodeListener(), this);
         getServer().getPluginManager().registerEvents(new PickupItemListener(), this);
+        getServer().getPluginManager().registerEvents(new ItemDespawnListener(), this);
 
-        Location l = new Location(Bargain.getPlugin().getServer().getWorld("SkyLobby2"), 25.5, 144.5, -0.5);
-        ItemStack item = new ItemStack(Material.NETHER_STAR);
-
-        ItemMeta meta = item.getItemMeta();
-        meta.setLocalizedName("display");
-        item.setItemMeta(meta);
-        Item randomItem = getPlugin().getServer().getWorld("SkyLobby2").dropItem(l, item);
-        randomItem.setVelocity(new Vector(0,0,0));
+//        Location l = new Location(Bargain.getPlugin().getServer().getWorld("SkyLobby2"), 25.5, 144.5, -0.5);
+//        ItemStack item = new ItemStack(Material.NETHER_STAR);
+//
+//        ItemMeta meta = item.getItemMeta();
+//        meta.setLocalizedName("display");
+//        item.setItemMeta(meta);
+//        Item randomItem = getPlugin().getServer().getWorld("SkyLobby2").dropItem(l, item);
+//        randomItem.setVelocity(new Vector(0,0,0));
     }
 
     public static Bargain getPlugin() {
