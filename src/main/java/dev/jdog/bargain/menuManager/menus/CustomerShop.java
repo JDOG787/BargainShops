@@ -34,10 +34,19 @@ public class CustomerShop extends Menu {
     public void handleMenu(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         Shop shop = Bargain.getPlayerUtiliity(getPlayer()).getCurrentShop();
+        Economy economy = Bargain.getEconomy();
+
 
         switch (e.getCurrentItem().getType()){
             case GOLD_INGOT:
                 p.sendMessage("Buy");
+                if (economy.getBalance(getPlayer()) >= shop.getBuyPrice()) {
+                    economy.withdrawPlayer(getPlayer(), shop.getBuyPrice());
+                    p.getInventory().addItem(new ItemStack(shop.getShopItem(), shop.getQuanity()));
+                    p.sendMessage(ChatColor.GOLD + "You bought " + shop.getQuanity() + " " + shop.getShopItem() + " for $" + shop.getBuyPrice());
+                } else {
+                    p.sendMessage(ChatColor.RED + "You do not have the funds to buy this item!");
+                }
 
                 break;
             case IRON_INGOT:
@@ -51,7 +60,7 @@ public class CustomerShop extends Menu {
                 if (foundItem != null) {
                     if (foundItem.getAmount() >= shop.getQuanity()) {
                         p.getInventory().removeItem(new ItemStack(shop.getShopItem(), shop.getQuanity()));
-//                         Give player money
+                        economy.depositPlayer(getPlayer(), shop.getSellPrice());
                     } else {
                         p.sendMessage(ChatColor.RED + "You do not have enough of the required item!");
                     }
