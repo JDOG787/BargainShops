@@ -57,7 +57,7 @@ public class CreateShop extends Menu {
                 menu.open();
                 break;
             case "confirm":
-                Shop shop = new Shop(p, playerMenuUtility.getShopItem(), playerMenuUtility.getBuyPrice(), playerMenuUtility.getSellPrice(), playerMenuUtility.getQuantity(), playerMenuUtility.getLocation());
+                Shop shop = new Shop(p, playerMenuUtility.getShopItem(), playerMenuUtility.getBuyPrice(), playerMenuUtility.getSellPrice(), playerMenuUtility.getQuantity(), playerMenuUtility.getLocation(), 0);
                 new ShopStorage().createShop(shop);
                 p.sendMessage("Created shop");
                 p.closeInventory();

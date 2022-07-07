@@ -46,6 +46,23 @@ public class ShopStorage {
         }
     }
 
+    public void addStock(String id, Integer amount) {
+        for (Shop shop : shops) {
+            if (shop.getId().equals(id)) {
+                System.out.println("found");
+                Shop updatedShop = new Shop(Bukkit.getPlayer(shop.getOwner()), shop.getShopItem(), shop.getBuyPrice(), shop.getSellPrice(), shop.getQuanity(), shop.getLocation(), shop.getStock() + amount);
+                shops.remove(shop);
+                createShop(updatedShop);
+
+            }
+        }
+        try {
+            save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void loadShops() throws IOException {
         Gson gson = new Gson();
         File file = new File(Bargain.getPlugin().getDataFolder().getAbsolutePath() + "/shops.json");

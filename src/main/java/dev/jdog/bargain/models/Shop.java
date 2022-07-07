@@ -14,6 +14,7 @@ public class Shop {
     private Integer buyPrice;
     private Integer sellPrice;
     private Integer quanity;
+    private Integer stock;
 //    private Location location;
     private Integer x;
     private Integer y;
@@ -23,13 +24,14 @@ public class Shop {
 
 
 
-    public Shop(Player p, Material item, Integer buy, Integer sell, Integer q, Location l) {
-        this.owner = p.getName()+"hi";
+    public Shop(Player p, Material item, Integer buy, Integer sell, Integer q, Location l, Integer s) {
+        this.owner = p.getName();
         this.shopItem = item;
 //        System.out.println("ok"+item);
         this.buyPrice = buy;
         this.sellPrice = sell;
         this.quanity = q;
+        this.stock = s;
         this.x = l.getBlockX();
         this.y = l.getBlockY();
         this.z = l.getBlockZ();
@@ -51,6 +53,10 @@ public class Shop {
 
     public Integer getQuanity() {
         return quanity;
+    }
+
+    public Integer getStock() {
+        return stock;
     }
 
     public Location getLocation() {
