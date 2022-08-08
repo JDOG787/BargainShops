@@ -4,7 +4,9 @@ import dev.jdog.bargain.Bargain;
 import dev.jdog.bargain.menuManager.Menu;
 import dev.jdog.bargain.menuManager.PlayerMenuUtility;
 import dev.jdog.bargain.models.Shop;
+import dev.jdog.bargain.utils.MenuUtils;
 import dev.jdog.bargain.utils.ShopStorage;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -34,7 +36,7 @@ public class VendorShop extends Menu {
 
 
         switch (e.getCurrentItem().getType()) {
-            case HOPPER_MINECART:
+            case CHEST_MINECART:
 //                for (ItemStack item :p.getInventory().getContents()) {
 //
 //                }
@@ -45,16 +47,27 @@ public class VendorShop extends Menu {
                 }
                 new ShopStorage().addStock(shop.getId(), itemsRemoved);
                 break;
+
+            case OAK_SIGN:
+                CustomerShop menu = new CustomerShop(playerMenuUtility);
+                menu.open();
         }
     }
 
     @Override
     public void setMenuItems() {
-        ItemStack slot1 = new ItemStack(Material.HOPPER_MINECART);
-        ItemStack slot9 = new ItemStack(Material.REPEATER);
+        PlayerMenuUtility playerMenuUtility = Bargain.getPlayerUtiliity(getPlayer());
+        Shop shop = playerMenuUtility.getCurrentShop();
+        ItemStack slot1 = new ItemStack(Material.CHEST_MINECART);
+        slot1 = new MenuUtils().createItemMeta(slot1,  ChatColor.GREEN + "" + ChatColor.BOLD + "Deposit '"+shop.getShopItem()+"'", "", null);
+//        ItemStack slot8 = new ItemStack(Material.REPEATER);
+//        slot8 = new MenuUtils().createItemMeta(slot8,  ChatColor.GREEN + "" + ChatColor.BOLD + "Edit", "", null);
+
+        ItemStack slot9 = new ItemStack(Material.OAK_SIGN);
+        slot9 = new MenuUtils().createItemMeta(slot9,  ChatColor.GREEN + "" + ChatColor.BOLD + "View as customer", "", null);
 
 
-        ItemStack[] items = {slot1, null, null, null, null, null, null, null, slot9};
+        ItemStack[] items = {slot1, null, null, null, new ItemStack(shop.getShopItem()), null, null, null, slot9};
 
         inventory.setContents(items);
 
